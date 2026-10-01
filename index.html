@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{
+  margin: 0;
+  min-height: 100vh;
+  background: url(sign.gif);
+  background-size: 15%;
+  background-repeat: repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.box{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.word{
+  background: white;
+  padding: 5px 15px;
+  margin-bottom: 10px;
+  font-size: 28px;
+  font-weight: bold;
+}
+#leftbox{
+  position: fixed;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+#rightbox{
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+#leftbtn, #rightbtn{
+  width: 80px;
+  cursor: pointer;
+}
+#vid{
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+  <div class="box" id="leftbox">
+      <div class="word">이전</div>
+      <img src="left.jpg" id="leftbtn">
+  </div>
+
+  <div class="box">
+     <div class="word" id="meaning">방귀, 방귀 뀌다</div>
+     <video src="fart.mp4" id="vid" width="300" muted></video>
+      <audio src="fartsound.mp3" id="snd"></audio>
+  </div>
+
+<div class="box" id="rightbox">
+    <div class="word">다음</div>
+    <img src="right.jpg" id="rightbtn">
+</div>
+
+<script>
+let videos = ["fart.mp4", "sleep.mp4", "suddenly.mp4", "water.mp4"];
+let sounds = ["fartsound.mp3", "sleepsound.mp3", "suddenly.mp3", "watersound.mp3"];
+let words  = ["방귀, 방귀 뀌다", "잠, 자다", "갑자기", "물"];
+
+let n = 0;
+let state = "off";
+
+function change(){
+  vid.pause();
+  snd.pause();
+  vid.src = videos[n];
+  snd.src = sounds[n];
+  meaning.innerText = words[n];
+  state = "off";
+}
+
+rightbtn.onclick = function(){
+  n = n + 1;
+  if(n == videos.length){
+    n = 0;
+  }
+  change();
+}
+
+leftbtn.onclick = function(){
+  n = n - 1;
+  if(n < 0){
+    n = videos.length - 1;
+  }
+  change();
+}
+
+vid.onclick = function(){
+  if(state == "off"){
+    vid.currentTime = 0;
+    snd.currentTime = 0;
+    vid.play();
+    snd.play();
+    state = "on";
+  }else if(state == "on"){
+    vid.pause();
+    snd.pause();
+    state = "off";
+  }
+}
+
+vid.onended = function(){
+  snd.pause();
+  state = "off";
+}
+</script>
+</body>
+</html>
